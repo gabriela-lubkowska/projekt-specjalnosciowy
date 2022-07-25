@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Lista produktów {{ kategoria }}{% endblock %}
+
+{% block body %}
+    <h2>{{ kategoria }} </h2>
+
+    {% if produkt|length > 0 %}
+        <div class="container" style="margin-top:50px;">
+        <div class="row">
+            
+            {% for Produkt in produkt %}
+                <div class="col-md-3">
+                    <div class="card-sl">
+                        <div class="card-image">
+                            <img src="{{ asset('uploads/' ~ Produkt.photofilename) }}"/>
+                        </div>
+                            <div class="card-heading">
+                                {{ Produkt.nazwa }}
+                            </div>
+                            <div class="card-text">
+                                {% if Produkt.czyDostepne == 1 %}
+                                    <p>W magazynie</p>
+                                {% else %}
+                                    <p>Produkt niedostępny</p>
+                                {% endif %}
+                            </div>
+                            <div class="card-text">
+                                {{ Produkt.cena }}
+                            </div>
+                            <a href="#" class="card-button">Dodaj do koszyka</a>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if previous >= 0 %}
+            <a href="{{ path('kategoria', { id: kategoria.id, offset: previous}) }}">Poprzednie</a>
+        {% endif %}
+        {% if next < produkt|length %}
+            <a href="{{ path('kategoria', { id: kategoria.id, offset: next}) }}">Następne</a>
+        {% endif %}
+    {% else %}
+        <div>Nie ma jeszcze produktów dla tej kategorii</div>
+    {% endif %}
+{% endblock %}
